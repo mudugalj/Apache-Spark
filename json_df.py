@@ -11,6 +11,9 @@ spark = SparkSession.builder.\
 ordersDF = spark.read.json("/Users/prajaya/data/retail_db_json/orders")
 print("Number of records before filter", ordersDF.count())
 
+#Print Schema
+ordersDF.printSchema()
+
 #Filter data
 ordersDF = ordersDF.filter(ordersDF['order_status'].isin('CLOSED',"COMPLETE"))
 print("Number of records after filter", ordersDF.count())
@@ -22,10 +25,16 @@ ordersGrouped = ordersDF.groupby('order_status').count()
 ordersGrouped.show()
 print("The type of ordersGrouped is ", type(ordersGrouped))
 
-#Create Temp table in Spark Catalogue / List tables / Show Type
-ordersGrouped.createOrReplaceTempView("validOrders")
+#Create Local Temp table in Spark Catalogue / List tables / Show Type
+ordersGrouped.createOrReplaceTempView("localValidOrders")
 print(spark.catalog.listTables())
-sqlDF = spark.sql("SELECT * FROM validOrders")
-sqlDF.show()
-print("The type of sqlDF is", type(sqlDF))
+localSqlDF = spark.sql("SELECT * FROM localValidOrders")
+localSqlDF.show()
+print("The type of localSqlDF is", type(localSqlDF))
+
+#Create GLobal Temp table in Spark Catalogue / List tables / Show Type
+ordersGrouped.createGlobalTempView("globalValidOrders")
+globalSqlDF = spark.sql("SELECT * FROM global_temp.globalValidOrders")
+globalSqlDF.show()
+print("The type of globalSqlDF is", type(globalSqlDF))
 

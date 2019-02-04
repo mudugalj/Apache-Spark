@@ -1,6 +1,7 @@
 
 # Import Python Libraries
 
+
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql.functions import *
@@ -21,8 +22,8 @@ orders = spark.read.csv("/Users/prajaya/data/retail_db/orders")
 
 # Format data
 ordersDF = orders.toDF("order_id","order_date","order_customer_id","order_status").\
-           select("order_id",substring("order_date",1,4).alias("order_yyyy"),"order_customer_id","order_status")
-           #filter((col("order_status").isin("CLOSED",'COMPLETE')))
+           select("order_id",substring("order_date",1,4).alias("order_yyyy"),"order_customer_id","order_status").\
+           filter((col("order_status").isin("CLOSED",'COMPLETE')))
 
 ordersDF = ordersDF.\
             withColumn("order_id",ordersDF.order_id.cast(IntegerType())).\
