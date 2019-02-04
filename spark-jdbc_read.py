@@ -11,7 +11,7 @@ spark = SparkSession.\
 #    option("driver", "com.mysql.jdbc.Driver").\
 #    option("dbtable", "employee").\
 #    option("user", "root").\
-#    option("password", "prajaya123").load()
+#    option("password", "*******").load()
 
 #dataframe_mysql.show()
 
